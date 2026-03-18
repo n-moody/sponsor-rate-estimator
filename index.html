@@ -46,7 +46,7 @@
       </div>
       <div style="display:flex;flex-direction:column;gap:8px">
         <button id="previewBtn" type="button">Preview PDF</button>
-        <button id="officialBtn" type="button" disabled title="Official PDF (server-side) — enable when DOC_RAPTOR_KEY is set">Get official PDF</button>
+        <button id="officialBtn" type="button" title="Official PDF (server-side) — enable when DOC_RAPTOR_KEY is set">Get official PDF</button>
       </div>
     </form>
 
@@ -79,8 +79,8 @@
   </div>
 
   <!-- jsPDF + html2canvas from CDN for client-side preview -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNa5V6oS0uYt+0T2q1q0I3N/0iVf6YqvF9H8s1RZ7k2Vq+6I3KqvGq7x9Y8w3wXgKq2Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <script>
     const { jsPDF } = window.jspdf;
