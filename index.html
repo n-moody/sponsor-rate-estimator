@@ -4,19 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sponsor Rate Estimator — Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     body{font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;line-height:1.5;color:#0f172a;margin:0;background:#f8fafc}
     .container{max-width:920px;margin:48px auto;padding:28px;background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(15,23,42,0.06)}
     header{display:flex;align-items:center;justify-content:space-between}
     h1{margin:0 0 8px;font-size:22px}
     p.lead{margin:0;color:#475569}
-    form{margin-top:18px;display:grid;grid-template-columns:1fr 160px;gap:12px}
-    input,select{padding:10px;border:1px solid #e6eef7;border-radius:8px}
-    button{background:#0ea5a4;color:#fff;border:none;padding:10px;border-radius:10px;cursor:pointer}
+    form{margin-top:18px;display:grid;grid-template-columns:1fr 200px;gap:12px}
+    input,select{padding:12px;border:1px solid #e6eef7;border-radius:8px}
+    button{background:#0ea5a4;color:#fff;border:none;padding:12px;border-radius:10px;cursor:pointer}
     section{margin-top:22px}
     .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
     .card{background:#f1f5f9;padding:12px;border-radius:8px}
     footer{margin-top:22px;color:#64748b;font-size:13px}
+    .form-row{display:flex;gap:8px}
+    label.small{font-size:12px;color:#64748b}
     @media(max-width:700px){.cards{grid-template-columns:1fr}form{grid-template-columns:1fr}}
   </style>
 </head>
@@ -25,27 +28,33 @@
     <header>
       <div>
         <h1>Know what to charge for sponsors — instantly</h1>
-        <p class="lead">Enter downloads, niche, and ad format — get a suggested sponsor rate table + downloadable media kit.</p>
+        <p class="lead">Enter a few metrics and get a tailored media kit and suggested sponsor rates.</p>
       </div>
     </header>
 
     <form id="calc">
       <div>
-        <input type="email" id="email" placeholder="Your email" required>
-        <div style="display:flex;gap:8px;margin-top:8px">
+        <div class="form-row">
+          <input type="text" id="show_name" placeholder="Podcast name (optional)">
+          <input type="email" id="email" placeholder="Your email">
+        </div>
+        <div class="form-row" style="margin-top:8px">
           <input type="number" id="downloads" placeholder="Downloads per episode" style="flex:1">
           <select id="niche"><option>Tech</option><option>Business</option><option>Lifestyle</option></select>
+          <input type="number" id="length" placeholder="Length (min)" style="width:80px">
         </div>
       </div>
-      <div><button type="submit">Get My Sponsor Rates</button></div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button id="previewBtn" type="button">Preview PDF</button>
+        <button id="officialBtn" type="button" disabled title="Official PDF (server-side) — enable when DOC_RAPTOR_KEY is set">Get official PDF</button>
+      </div>
     </form>
 
     <section>
       <h3>How it works</h3>
       <ol>
-        <li>Enter your metrics</li>
-        <li>Get a suggested rate table and downloadable media kit</li>
-        <li>Use our pitch templates to close deals</li>
+        <li>Enter your metrics and click Preview to get a quick PDF generated in your browser.</li>
+        <li>Click "Get official PDF" for a print‑quality PDF (server) — we’ll generate and email it.</li>
       </ol>
 
       <div class="cards">
@@ -65,11 +74,61 @@
     </section>
 
     <footer>
-      Prototype for validation — not production. Questions? Reply here.
+      Prototype for validation — not production. Reply here with questions.
     </footer>
   </div>
+
+  <!-- jsPDF + html2canvas from CDN for client-side preview -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNa5V6oS0uYt+0T2q1q0I3N/0iVf6YqvF9H8s1RZ7k2Vq+6I3KqvGq7x9Y8w3wXgKq2Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
   <script>
-    document.getElementById('calc').addEventListener('submit', function(e){e.preventDefault();alert('This is a prototype. We will replace this with a working flow after validation.');});
+    const { jsPDF } = window.jspdf;
+
+    async function renderPreview() {
+      const container = document.createElement('div');
+      container.style.width = '794px'; // A4 at 96dpi approx
+      container.style.padding = '28px';
+      container.style.background = '#fff';
+      container.innerHTML = `
+        <h1>${document.getElementById('show_name').value || 'Podcast Name'} — Sponsorship Media Kit</h1>
+        <p>Downloads: ${document.getElementById('downloads').value || '—'} • Niche: ${document.getElementById('niche').value} • Length: ${document.getElementById('length').value || '—'} min</p>
+        <h3>Suggested Rates</h3>
+        <table style="width:100%;border-collapse:collapse"><tr><th>Ad</th><th>Length</th><th>Suggested rate</th></tr>
+        <tr><td>Pre-roll</td><td>15s</td><td>$${Math.max(30, Math.round((document.getElementById('downloads').value||0)/1000*5))}–$${Math.max(60, Math.round((document.getElementById('downloads').value||0)/1000*10))}</td></tr>
+        <tr><td>Mid-roll</td><td>60s</td><td>$${Math.max(100, Math.round((document.getElementById('downloads').value||0)/1000*20))}–$${Math.max(300, Math.round((document.getElementById('downloads').value||0)/1000*40))}</td></tr>
+        </table>
+      `;
+
+      document.body.appendChild(container);
+      await new Promise(r => setTimeout(r, 100)); // wait for fonts
+
+      const canvas = await html2canvas(container, {scale:2});
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({unit:'px', format:[794,1123]});
+      pdf.addImage(imgData, 'PNG', 0, 0, 794, 1123);
+      pdf.save(`${(document.getElementById('show_name').value||'podcast')}_preview.pdf`);
+      document.body.removeChild(container);
+    }
+
+    document.getElementById('previewBtn').addEventListener('click', () => {
+      renderPreview().catch(err => {console.error(err); alert('Preview failed: '+err.message)});
+    });
+
+    document.getElementById('officialBtn').addEventListener('click', async () => {
+      const payload = {
+        downloads: document.getElementById('downloads').value,
+        niche: document.getElementById('niche').value,
+        episode_length: document.getElementById('length').value,
+        email: document.getElementById('email').value,
+        show_name: document.getElementById('show_name').value
+      };
+      const res = await fetch('/.netlify/functions/generate-pdf', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)});
+      if (!res.ok) { alert('Server PDF failed: '+(await res.text())); return; }
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = `${payload.show_name || 'podcast'}_official.pdf`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
   </script>
 </body>
 </html>
