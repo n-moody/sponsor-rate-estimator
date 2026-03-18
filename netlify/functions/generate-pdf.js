@@ -1,1 +1,1 @@
-      const mockPath = path.join(__dirname, 'media_kit_small.pdf');
+      const mockPath = path.join(process.cwd(), 'netlify', 'functions', 'media_kit_small.pdf');
