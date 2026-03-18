@@ -1,21 +1,42 @@
 <!doctype html>
 <html>
-<head><meta charset="utf-8"><title>Media Kit — Small</title></head>
+<head>
+  <meta charset="utf-8">
+  <title>Media Kit — Small</title>
+  <style>
+    body{font-family:Inter,system-ui,Arial;color:#0f172a;background:#fff;padding:28px}
+    .kit{max-width:720px;margin:0 auto;border:1px solid #e6eef7;padding:20px;border-radius:10px}
+    h1{margin:0 0 6px;font-size:20px}
+    p.lead{color:#475569;margin:0 0 14px}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    td,th{padding:8px;border-bottom:1px solid #eef2f7}
+    .cta{display:inline-block;margin-top:12px;background:#0ea5a4;color:#fff;padding:10px 14px;border-radius:8px;text-decoration:none}
+  </style>
+</head>
 <body>
-  <h1>[Podcast Name] — Sponsorship One‑Pager (Small)</h1>
-  <h2>Overview</h2>
-  <ul>
-    <li>Downloads: 1k–4k per episode</li>
-    <li>Audience: Example demo (60% US, 25–44, interest: tech/productivity)</li>
-  </ul>
-  <h2>Sponsorship Options</h2>
-  <ul>
-    <li>Pre-roll (15s): $50–$100 per episode</li>
-    <li>Mid-roll (60s): $150–$300 per episode</li>
-    <li>Episode takeover (1 slot): $400 per episode</li>
-  </ul>
-  <h2>Deliverables</h2>
-  <p>Host-read ad, show notes link, social mention</p>
-  <p><strong>CTA:</strong> Contact [email] to book a campaign.</p>
+  <div class="kit">
+    <h1>[Podcast Name] — Sponsorship One‑Pager</h1>
+    <p class="lead">Downloads: 1k–4k / episode • Audience: Tech & Productivity</p>
+
+    <h3>Sponsorship Options</h3>
+    <table>
+      <tr><th>Ad</th><th>Length</th><th>Suggested rate</th></tr>
+      <tr><td>Pre-roll</td><td>15s</td><td>$50–$100</td></tr>
+      <tr><td>Mid-roll</td><td>60s</td><td>$150–$300</td></tr>
+      <tr><td>Episode takeover</td><td>—</td><td>$400</td></tr>
+    </table>
+
+    <h3>Deliverables</h3>
+    <ul>
+      <li>Host‑read ad</li>
+      <li>Show notes link</li>
+      <li>1 social mention (Twitter/IG story)</li>
+    </ul>
+
+    <p><strong>Contact:</strong> [email] — to book a campaign</p>
+    <a class="cta" href="#">Download PDF</a>
+  </div>
 </body>
 </html>
