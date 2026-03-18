@@ -11,7 +11,7 @@ exports.handler = async (event) => {
     // If DocRaptor key not set, return a mock PDF (use existing sample file in repo)
     const apiKey = process.env.DOC_RAPTOR_KEY;
     if (!apiKey) {
-      const mockPath = path.join(process.cwd(), 'netlify', 'functions', 'media_kit_small.pdf');
+      const mockPath = process.cwd() + '/netlify/functions/media_kit_small.pdf';
       if (fs.existsSync(mockPath)) {
         const pdf = fs.readFileSync(mockPath);
         return {
