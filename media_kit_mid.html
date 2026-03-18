@@ -1,20 +1,39 @@
 <!doctype html>
 <html>
-<head><meta charset="utf-8"><title>Media Kit — Mid</title></head>
+<head>
+  <meta charset="utf-8">
+  <title>Media Kit — Mid</title>
+  <style>
+    body{font-family:Inter,system-ui,Arial;color:#0f172a;background:#fff;padding:28px}
+    .kit{max-width:720px;margin:0 auto;border:1px solid #e6eef7;padding:20px;border-radius:10px}
+    h1{margin:0 0 6px;font-size:20px}
+    p.lead{color:#475569;margin:0 0 14px}
+    .tiers{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .tier{padding:12px;border-radius:8px;background:#f8fafc}
+    .cta{display:inline-block;margin-top:14px;background:#0ea5a4;color:#fff;padding:10px 14px;border-radius:8px;text-decoration:none}
+  </style>
+</head>
 <body>
-  <h1>[Podcast Name] — Sponsorship One‑Pager (Mid)</h1>
-  <h2>Overview</h2>
-  <ul>
-    <li>Downloads: 10k–40k per episode</li>
-    <li>Audience: Demo demographics</li>
-  </ul>
-  <h2>Sponsorship Tiers</h2>
-  <ul>
-    <li>Bronze: Mid-roll only — $450/ep</li>
-    <li>Silver: Mid-roll + show notes + 2 social posts — $900/ep</li>
-    <li>Gold: Mid-roll + host segment + newsletter feature — $1,800/ep</li>
-  </ul>
-  <p><strong>Add-ons:</strong> episode transcript, product placement mention, custom integration</p>
-  <p><strong>CTA:</strong> Contact [email] to book a campaign.</p>
+  <div class="kit">
+    <h1>[Podcast Name] — Sponsorship One‑Pager (Mid)</h1>
+    <p class="lead">Downloads: 10k–40k / episode • Audience: Demo demographics</p>
+
+    <h3>Sponsorship Tiers</h3>
+    <div class="tiers">
+      <div class="tier"><strong>Bronze</strong><p>Mid-roll only — $450/ep</p></div>
+      <div class="tier"><strong>Silver</strong><p>Mid-roll + show notes + 2 social posts — $900/ep</p></div>
+      <div class="tier"><strong>Gold</strong><p>Mid-roll + host segment + newsletter feature — $1,800/ep</p></div>
+    </div>
+
+    <h3>Add-ons</h3>
+    <ul>
+      <li>Episode transcript</li>
+      <li>Product placement mention</li>
+      <li>Custom integrations</li>
+    </ul>
+
+    <p><strong>Contact:</strong> [email] — to book a campaign</p>
+    <a class="cta" href="#">Download PDF</a>
+  </div>
 </body>
 </html>
