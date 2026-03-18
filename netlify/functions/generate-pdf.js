@@ -1,4 +1,6 @@
 const fetch = require('node-fetch');
+const fs = require('fs');
+const path = require('path');
 
 exports.handler = async (event) => {
   try {
@@ -6,50 +8,29 @@ exports.handler = async (event) => {
     const data = JSON.parse(event.body);
     const { downloads, niche, episode_length, email, show_name } = data;
 
-    const html = `
-      <html>
-      <head>
-        <meta charset="utf-8"/>
-        <style>
-          body{font-family: Arial, sans-serif; padding:28px; color:#0f172a}
-          .header{display:flex; justify-content:space-between; align-items:center}
-          h1{font-size:20px;margin:0}
-          .meta{margin-top:8px;color:#475569}
-          .section{margin-top:18px}
-          table{width:100%;border-collapse:collapse;margin-top:8px}
-          th,td{padding:8px;border-bottom:1px solid #eef2f7}
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <div>
-            <h1>${show_name || 'Podcast Name'} — Sponsorship Media Kit</h1>
-            <div class="meta">Downloads: ${downloads} • Niche: ${niche} • Episode Length: ${episode_length} min</div>
-          </div>
-        </div>
-
-        <div class="section">
-          <h3>Suggested Rates</h3>
-          <table>
-            <tr><th>Ad</th><th>Length</th><th>Suggested rate</th></tr>
-            <tr><td>Pre-roll</td><td>15s</td><td>$${Math.max(30, Math.round(downloads/1000*5))}–$${Math.max(60, Math.round(downloads/1000*10))}</td></tr>
-            <tr><td>Mid-roll</td><td>60s</td><td>$${Math.max(100, Math.round(downloads/1000*20))}–$${Math.max(300, Math.round(downloads/1000*40))}</td></tr>
-          </table>
-        </div>
-
-        <div class="section">
-          <h3>Deliverables</h3>
-          <ul>
-            <li>Host‑read ad</li>
-            <li>Show notes link</li>
-            <li>Social posts (1–2)</li>
-          </ul>
-        </div>
-      </body>
-      </html>
-    `;
-
+    // If DocRaptor key not set, return a mock PDF (use existing sample file in repo)
     const apiKey = process.env.DOC_RAPTOR_KEY;
+    if (!apiKey) {
+      const mockPath = path.join(__dirname, '..', 'media_kit_small.pdf');
+      if (fs.existsSync(mockPath)) {
+        const pdf = fs.readFileSync(mockPath);
+        return {
+          statusCode: 200,
+          headers: {
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': `attachment; filename="${(show_name||'podcast')}_media_kit.pdf"`,
+          },
+          body: pdf.toString('base64'),
+          isBase64Encoded: true
+        };
+      } else {
+        return { statusCode: 500, body: 'Mock PDF not found on server' };
+      }
+    }
+
+    // Real generation via DocRaptor
+    const html = `...`;
+
     const resp = await fetch('https://docraptor.com/docs', {
       method: 'POST',
       headers: {
